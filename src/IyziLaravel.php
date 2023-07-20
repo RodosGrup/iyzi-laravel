@@ -1,11 +1,11 @@
 <?php
 
-namespace Rodosgrup\IyziLaravel;
+namespace RodosGrup\IyziLaravel;
 
 use Iyzipay\Model\ApiTest;
 use Iyzipay\Options;
-use Rodosgrup\IyziLaravel\Exceptions\Iyzipay\IyzipayAuthenticationException;
-use Rodosgrup\IyziLaravel\Exceptions\Iyzipay\IyzipayConnectionException as IyzipayIyzipayConnectionException;
+use RodosGrup\IyziLaravel\Exceptions\Iyzipay\IyzipayAuthenticationException;
+use RodosGrup\IyziLaravel\Exceptions\Iyzipay\IyzipayConnectionException as IyzipayIyzipayConnectionException;
 
 class IyziLaravel
 {
@@ -14,9 +14,8 @@ class IyziLaravel
 
     public function __construct($config = [])
     {
-        $this->config = config('iyzi-laravel');
-        //$this->apiStart();
-        //$this->checkControl();
+        $this->apiStart();
+        $this->checkControl();
     }
 
     private function checkControl()
@@ -35,10 +34,9 @@ class IyziLaravel
     private function apiStart()
     {
         $this->options = new Options();
-        dd(config('baseUrl'));
-        $this->options->setBaseUrl(config('baseUrl'));
-        $this->options->setApiKey(config('apiKey'));
-        $this->options->setSecretKey(config('secretKey'));
+        $this->options->setBaseUrl(config('iyzi-laravel.baseUrl'));
+        $this->options->setApiKey(config('iyzi-laravel.apiKey'));
+        $this->options->setSecretKey(config('iyzi-laravel.secretKey'));
     }
 
     public function hiyziLaravel()

@@ -1,10 +1,10 @@
 <?php
 
-namespace Rodosgrup\IyziLaravel;
+namespace RodosGrup\IyziLaravel;
 
 use Illuminate\Support\ServiceProvider;
 
-class IyziLaravelProvider extends ServiceProvider
+class IyziLaravelServiceProvider extends ServiceProvider
 {
     public function boot()
     {
@@ -20,7 +20,7 @@ class IyziLaravelProvider extends ServiceProvider
             'iyzi-laravel'
         );
 
-        $this->app->bind('iyziLaravelPay', function () {
+        $this->app->bind('iyzico', function () {
             return new IyziLaravel();
         });
     }

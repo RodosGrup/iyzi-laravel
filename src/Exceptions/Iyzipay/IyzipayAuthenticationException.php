@@ -1,6 +1,6 @@
 <?php
 
-namespace Rodosgrup\IyziLaravel\Exceptions\Iyzipay;
+namespace RodosGrup\IyziLaravel\Exceptions\Iyzipay;
 
 class IyzipayAuthenticationException extends \Exception
 {
