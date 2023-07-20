@@ -1,6 +1,6 @@
 # iyzi-laravel
 
-Iyzico laravel package
+Iyzico Laravel Package
 
 ## Installation
 
