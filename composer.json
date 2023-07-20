@@ -1,0 +1,25 @@
+{
+    "name": "rodosgrup/iyzi-laravel",
+    "description": "Iyzico laravel package",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Rodosgrup\\IyziLaravel\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rodosgrup\\IyziLaravel\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Rodos Yazılım",
+            "email": "yazilim@rodosgrup.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^10.2"
+    }
+}
