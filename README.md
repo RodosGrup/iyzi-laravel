@@ -12,10 +12,10 @@ composer require rodosgrup/iyzi-laravel
 ## Usage
 
 ```php
-use Rodosgrup\IyziLaravel\IyziLaravel;
-
-$iyzi = new IyziLaravel();
+$pay = app()->iyzico;
 ```
+## Working Status
+* Single Payment ✓
 
 ## Contributing
 
