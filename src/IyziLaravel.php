@@ -18,6 +18,9 @@ use Iyzipay\Request\CreatePaymentRequest;
 use RodosGrup\IyziLaravel\Exceptions\Iyzipay\IyzipayAuthenticationException;
 use RodosGrup\IyziLaravel\Exceptions\Iyzipay\IyzipayConnectionException as IyzipayIyzipayConnectionException;
 use Illuminate\Support\Str;
+use Iyzipay\Model\Card;
+use Iyzipay\Model\CardInformation;
+use Iyzipay\Request\CreateCardRequest;
 
 class IyziLaravel
 {
@@ -131,8 +134,28 @@ class IyziLaravel
         print_r($createPay);
     }
 
-    public function hiyziLaravel()
+    /** It is a function to store the sent card information.
+     * array $attuributes
+     */
+    public function createCard(array $attributes)
     {
-        echo 'Merhaba dünya';
+        $request = new CreateCardRequest();
+        $request->setLocale(Locale::TR);
+        $request->setConversationId(Str::random(5) . time());
+        $request->setEmail($attributes['Email']);
+        $request->setExternalId($attributes['ExternalId']);
+
+        $infoCard = new CardInformation();
+        $infoCard->setCardAlias($attributes['Alias']);
+        $infoCard->setCardHolderName($attributes['CardHolderName']);
+        $infoCard->setCardNumber($attributes['CardNumber']);
+        $infoCard->setExpireMonth($attributes['ExpireMonth']);
+        $infoCard->setExpireYear($attributes['ExpireYear']);
+
+        $request->setCard($infoCard);
+
+        $keepCard = Card::create($request, $this->options);
+
+        return json_decode(collect($keepCard)->toArray()["\x00Iyzipay\ApiResource\x00rawResult"]);
     }
 }
