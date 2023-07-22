@@ -20,7 +20,10 @@ use RodosGrup\IyziLaravel\Exceptions\Iyzipay\IyzipayConnectionException as Iyzip
 use Illuminate\Support\Str;
 use Iyzipay\Model\Card;
 use Iyzipay\Model\CardInformation;
+use Iyzipay\Model\CardList;
 use Iyzipay\Request\CreateCardRequest;
+use Iyzipay\Request\DeleteCardRequest;
+use Iyzipay\Request\RetrieveCardListRequest;
 
 class IyziLaravel
 {
@@ -157,5 +160,39 @@ class IyziLaravel
         $keepCard = Card::create($request, $this->options);
 
         return json_decode(collect($keepCard)->toArray()["\x00Iyzipay\ApiResource\x00rawResult"]);
+    }
+
+    /**
+     * Used to query the cards that are hidden
+     * string $userKey
+     */
+    public function cardList(string $userKey)
+    {
+        $info = new RetrieveCardListRequest();
+        $info->setLocale(Locale::TR);
+        $info->setConversationId(Str::random(5) . time());
+        $info->setCardUserKey($userKey);
+
+        $list = CardList::retrieve($info, $this->options);
+
+        return json_decode(collect($list)->toArray()["\x00Iyzipay\ApiResource\x00rawResult"]);
+    }
+
+    /**
+     * Deletion of previously added cards is done
+     * string $userKey
+     * string $cardToken
+     */
+    public function deleteCard(string $userKey, string $cardToken)
+    {
+        $info = new DeleteCardRequest();
+        $info->setLocale(Locale::TR);
+        $info->setConversationId(Str::random(5) . time());
+        $info->setCardToken($cardToken);
+        $info->setCardUserKey($userKey);
+
+        $delete = Card::delete($info, $this->options);
+
+        return json_decode(collect($delete)->toArray()["\x00Iyzipay\ApiResource\x00rawResult"]);
     }
 }
