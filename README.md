@@ -122,6 +122,7 @@ $start = $iyzi->storingSecondCard($data);
     - Query Stored Card
     - Delete Stored Card
     - Keep Second Card
+* Get paid with a storage card. ✓
 
 ## Contributing
 
