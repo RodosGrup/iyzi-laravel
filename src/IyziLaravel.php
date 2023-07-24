@@ -112,10 +112,10 @@ class IyziLaravel
         $paymentRequest->setShippingAddress($shipping);
 
         $RodosGrup = new Address();
-        $RodosGrup->setContactName("Rodos Yazılım");
-        $RodosGrup->setCity("Sakarya");
+        $RodosGrup->setContactName(config('iyzi-laravel.billingName'));
+        $RodosGrup->setCity(config('iyzi-laravel.billingCity'));
         $RodosGrup->setCountry("Turkey");
-        $RodosGrup->setAddress("Arabacıalanı mah. Mehmet Akif Ersoy Cad No 33 /J-K Serdivan /SAKARYA");
+        $RodosGrup->setAddress(config('iyzi-laravel.billingAddress'));
 
         $paymentRequest->setBillingAddress($RodosGrup);
 
@@ -140,7 +140,7 @@ class IyziLaravel
     /** It is a function to store the sent card information.
      * array $attuributes
      */
-    public function createCard(array $attributes)
+    public function storageCard(array $attributes)
     {
         $request = new CreateCardRequest();
         $request->setLocale(Locale::TR);
@@ -160,6 +160,27 @@ class IyziLaravel
         $keepCard = Card::create($request, $this->options);
 
         return json_decode(collect($keepCard)->toArray()["\x00Iyzipay\ApiResource\x00rawResult"]);
+    }
+
+    public function storingSecondCard(array $attributes)
+    {
+        $query = new CreateCardRequest();
+        $query->setLocale(Locale::TR);
+        $query->setConversationId(Str::random(5) . time());
+        $query->setCardUserKey($attributes['userKey']);
+
+        $infoCard = new CardInformation();
+        $infoCard->setCardAlias($attributes['Alias']);
+        $infoCard->setCardHolderName($attributes['CardHolderName']);
+        $infoCard->setCardNumber($attributes['CardNumber']);
+        $infoCard->setExpireMonth($attributes['ExpireMonth']);
+        $infoCard->setExpireYear($attributes['ExpireYear']);
+
+        $query->setCard($infoCard);
+
+        $card = Card::create($query, $this->options);
+
+        return json_decode(collect($card)->toArray()["\x00Iyzipay\ApiResource\x00rawResult"]);
     }
 
     /**

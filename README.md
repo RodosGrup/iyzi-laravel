@@ -9,10 +9,20 @@ It is an iyzico payment service package developed for Laravel Library.
 composer require rodosgrup/iyzi-laravel
 ```
 
+```env
+IYZI_API_KEY=
+IYZI_SECRET_KEY=
+IYZI_BASE_URL=https://sandbox-api.iyzipay.com
+
+BILLING_NAME="RODOS GRUP"
+BILLING_CITY="SAKARYA"
+BILLING_ADDRESS="Arabacıalanı mah. Mehmet Akif Ersoy Cad No 33 /J-K Serdivan /SAKARYA"
+```
+
 ## Usage
 #### Application Launch
 ```php
-$pay = app()->iyzico;
+$iyzi = app()->iyzico;
 ```
 #### Single Payment
 ```php
@@ -37,9 +47,9 @@ $data = [
     'Category' => 'Eğitim'
 ];
 
-$start = $pay->startSinglePayment($data);
+$start = $iyzi->startSinglePayment($data);
 ```
-#### Create Card
+#### Card Storage
 ```php
 //Parameters to Send for Credit Card Storage
 $data = [
@@ -52,7 +62,7 @@ $data = [
     'ExpireYear' => '2030'
 ]
 
-$start = $pay->createCard($data);
+$start = $iyzi->storageCard($data);
 ```
 #### Delete Card
 ```php
@@ -60,18 +70,36 @@ $start = $pay->createCard($data);
 $userKey = 'WIN9SoDhzmqMKAOQ174GoSW63Iw=';
 $cardToken = 'qLm9Ler4ThhY0hE8xRnhT67maX0='
 
-$start = $pay->deleteCard($userKey,$cardToken);
+$start = $iyzi->deleteCard($userKey,$cardToken);
 ```
 #### Query Registered Card
 ```php
 //Parameters to Send for Registered Card Inquiry
 $userKey = 'WIN9SoDhzmqMKAOQ174GoSW63Iw=';
 
-$start = $pay->cardList($userKey);
+$start = $iyzi->cardList($userKey);
+```
+#### Storing the second card belonging to the user
+```php
+//Parameters required to store the second card of the user
+$data = [
+    'userKey' => 'WIN9SoDhzmqMKAOQ174GoSW63Iw=',
+    'Alias' => 'Bu benim ikinci kartım',
+    'CardHolderName' => 'Batuhan Haymana',
+    'CardNumber' => '4987490000000002',
+    'ExpireMonth' => '12',
+    'ExpireYear' => '2030'
+];
+
+$start = $iyzi->storingSecondCard($data);
 ```
 ## Working Status
 * Single Payment ✓
 * Card Transactions ✓
+    - Card Storage
+    - Query Stored Card
+    - Delete Stored Card
+    - Keep Second Card
 
 ## Contributing
 
