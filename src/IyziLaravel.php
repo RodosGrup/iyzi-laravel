@@ -21,6 +21,7 @@ use Illuminate\Support\Str;
 use Iyzipay\Model\Card;
 use Iyzipay\Model\CardInformation;
 use Iyzipay\Model\CardList;
+use Iyzipay\Model\Payment;
 use Iyzipay\Request\CreateCardRequest;
 use Iyzipay\Request\DeleteCardRequest;
 use Iyzipay\Request\RetrieveCardListRequest;
@@ -90,7 +91,7 @@ class IyziLaravel
         $paymentRequest->setPaymentCard($card);
 
         $buyer = new Buyer();
-        $buyer->setId($attributes['BuyerId']);
+        $buyer->setId(1);
         $buyer->setName($attributes['Name']);
         $buyer->setSurname($attributes['Surname']);
         $buyer->setGsmNumber($attributes['GsmNumber']);
@@ -137,6 +138,77 @@ class IyziLaravel
         print_r($createPay);
     }
 
+    /**
+     * Storage payment with a previously stored card
+     * array $atturibustes
+     */
+    public function paymentStorageCard(array $attributes)
+    {
+        $request = new CreatePaymentRequest();
+        $request->setLocale(Locale::TR);
+        $request->setConversationId(Str::random(5) . time());
+        $request->setPrice($attributes['Price']);
+        $request->setPaidPrice($attributes['Price']);
+        $request->setCurrency(Currency::TL);
+        $request->setInstallment(1);
+        $request->setBasketId($attributes['BasketId']);
+        $request->setPaymentChannel(PaymentChannel::WEB);
+        $request->setPaymentGroup(PaymentGroup::PRODUCT);
+
+        $paymentCard = new PaymentCard();
+        $paymentCard->setCardUserKey($attributes['UserKey']);
+        $paymentCard->setCardToken($attributes['CardToken']);
+
+        $request->setPaymentCard($paymentCard);
+
+        $buyer = new Buyer();
+        $buyer->setId(1);
+        $buyer->setName($attributes['Name']);
+        $buyer->setSurname($attributes['Surname']);
+        $buyer->setGsmNumber($attributes['GsmNumber']);
+        $buyer->setEmail($attributes['Email']);
+        $buyer->setIdentityNumber($attributes['IdentityNumber']);
+        $buyer->setRegistrationAddress($attributes['Address']);
+        $buyer->setIp($_SERVER["REMOTE_ADDR"]);
+        $buyer->setCity($attributes['City']);
+        $buyer->setCountry("Turkey");
+
+        $request->setBuyer($buyer);
+
+        $shipping = new Address();
+        $shipping->setContactName($attributes['Name'] . " " . $attributes['Surname']);
+        $shipping->setCity($attributes['City']);
+        $shipping->setCountry("Turkey");
+        $shipping->setAddress($attributes['Address']);
+
+        $request->setShippingAddress($shipping);
+
+        $RodosGrup = new Address();
+        $RodosGrup->setContactName(config('iyzi-laravel.billingName'));
+        $RodosGrup->setCity(config('iyzi-laravel.billingCity'));
+        $RodosGrup->setCountry("Turkey");
+        $RodosGrup->setAddress(config('iyzi-laravel.billingAddress'));
+
+        $request->setBillingAddress($RodosGrup);
+
+        $items = array();
+
+        $item = new BasketItem();
+        $item->setId($attributes['idItem']);
+        $item->setName($attributes['Pname']);
+        $item->setCategory1($attributes['Category']);
+        $item->setItemType(BasketItemType::VIRTUAL);
+        $item->setPrice($attributes['Price']);
+
+        $items[0] = $item;
+
+        $request->setBasketItems($items);
+
+        $payment = Payment::create($request, $this->options);
+
+        return json_decode(collect($payment)->toArray()["\x00Iyzipay\ApiResource\x00rawResult"]);
+    }
+
     /** It is a function to store the sent card information.
      * array $attuributes
      */
@@ -167,7 +239,7 @@ class IyziLaravel
         $query = new CreateCardRequest();
         $query->setLocale(Locale::TR);
         $query->setConversationId(Str::random(5) . time());
-        $query->setCardUserKey($attributes['userKey']);
+        $query->setCardUserKey($attributes['UserKey']);
 
         $infoCard = new CardInformation();
         $infoCard->setCardAlias($attributes['Alias']);
@@ -187,12 +259,12 @@ class IyziLaravel
      * Used to query the cards that are hidden
      * string $userKey
      */
-    public function cardList(string $userKey)
+    public function cardList(string $UserKey)
     {
         $info = new RetrieveCardListRequest();
         $info->setLocale(Locale::TR);
         $info->setConversationId(Str::random(5) . time());
-        $info->setCardUserKey($userKey);
+        $info->setCardUserKey($UserKey);
 
         $list = CardList::retrieve($info, $this->options);
 
@@ -204,13 +276,13 @@ class IyziLaravel
      * string $userKey
      * string $cardToken
      */
-    public function deleteCard(string $userKey, string $cardToken)
+    public function deleteCard(string $UserKey, string $cardToken)
     {
         $info = new DeleteCardRequest();
         $info->setLocale(Locale::TR);
         $info->setConversationId(Str::random(5) . time());
         $info->setCardToken($cardToken);
-        $info->setCardUserKey($userKey);
+        $info->setCardUserKey($UserKey);
 
         $delete = Card::delete($info, $this->options);
 

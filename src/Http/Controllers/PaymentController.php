@@ -27,7 +27,10 @@ class PaymentController extends Controller
 
         return redirect()->route('iyzico.laravel.gateway')
             ->with([
-                'content' => $request->all()
+                'content' => [
+                    'payment' => $request->all(),
+                    'info' => json_decode(collect($threedsPayment)->toArray()["\x00Iyzipay\ApiResource\x00rawResult"])
+                ]
             ]);
     }
 }
