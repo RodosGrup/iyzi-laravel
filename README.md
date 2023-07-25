@@ -8,6 +8,9 @@ It is an iyzico payment service package developed for Laravel Library.
 ```bash
 composer require rodosgrup/iyzi-laravel
 ```
+```bash
+php artisan vendor:publish
+```
 
 ```env
 IYZI_API_KEY=
