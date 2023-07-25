@@ -136,10 +136,12 @@ class IyziLaravel
 
         $createPay = ThreedsInitialize::create($paymentRequest, $this->options);
 
-        return redirect()->route('iyzico.laravel.gateway')
-            ->with([
-                'content' => $createPay->getHtmlContent()
-            ]);
+        if (collect($createPay)->toArray()["\x00Iyzipay\IyzipayResource\x00status"] === 'success') {
+            return redirect()->route('iyzico.laravel.gateway')
+                ->with([
+                    'content' => $createPay->getHtmlContent()
+                ]);
+        }
     }
 
     /**

@@ -16,10 +16,22 @@ php artisan vendor:publish
 IYZI_API_KEY=
 IYZI_SECRET_KEY=
 IYZI_BASE_URL=https://sandbox-api.iyzipay.com
+IYZI_RETURN_URL=
 
 BILLING_NAME="RODOS GRUP"
 BILLING_CITY="SAKARYA"
 BILLING_ADDRESS="Arabacıalanı mah. Mehmet Akif Ersoy Cad No 33 /J-K Serdivan /SAKARYA"
+```
+IYZI_RETURN_URL It is the route name you defined in the route file. Sample code is given below.
+```php
+//web.php
+Route::get('/return-test', [TestController::class, 'returnTest'])->name('returnTest');
+
+//TestController in function
+public function returnTest()
+{
+    return json_decode(collect(session('content')));
+}
 ```
 ## Working Status 🚀
 * Single Payment ✓
