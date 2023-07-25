@@ -18,6 +18,15 @@ BILLING_NAME="RODOS GRUP"
 BILLING_CITY="SAKARYA"
 BILLING_ADDRESS="Arabacıalanı mah. Mehmet Akif Ersoy Cad No 33 /J-K Serdivan /SAKARYA"
 ```
+## Working Status 🚀
+* Single Payment ✓
+* Card Transactions ✓
+    - Card Storage
+    - Query Stored Card
+    - Delete Stored Card
+    - Keep Second Card
+* Get paid with a storage card. ✓
+* Adding the stored cards to the database. ✓
 
 ## Usage 💵 💴 💶 💷
 #### Application Launch
@@ -117,15 +126,6 @@ $data = [
 
 $start = $iyzi->storingSecondCard($data);
 ```
-## Working Status
-* Single Payment ✓
-* Card Transactions ✓
-    - Card Storage
-    - Query Stored Card
-    - Delete Stored Card
-    - Keep Second Card
-* Get paid with a storage card. ✓
-* Adding the stored cards to the database. ✓
 
 ## Contributing
 
