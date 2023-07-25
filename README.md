@@ -70,7 +70,7 @@ $data = [
     'CardNumber' => '4059030000000009',
     'ExpireMonth' => '12',
     'ExpireYear' => '2030'
-]
+];
 
 $start = $iyzi->storageCard($data);
 ```
