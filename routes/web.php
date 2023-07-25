@@ -8,3 +8,4 @@ Route::get('gateway', function () {
 })->name('iyzico.laravel.gateway');
 
 Route::post('return', [PaymentController::class, 'return'])->name('iyzico.laravel.return');
+// Route::post('iyzi-pay', [PaymentController::class, 'pay'])->name('iyzico.laravel.pay');
