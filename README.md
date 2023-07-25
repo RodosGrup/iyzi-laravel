@@ -100,7 +100,7 @@ $start = $iyzi->paymentStorageCard($data);
 ```php
 //Parameters to Send to Delete Credit Card
 $UserKey = 'WIN9SoDhzmqMKAOQ174GoSW63Iw=';
-$cardToken = 'qLm9Ler4ThhY0hE8xRnhT67maX0='
+$cardToken = 'qLm9Ler4ThhY0hE8xRnhT67maX0=';
 
 $start = $iyzi->deleteCard($UserKey,$cardToken);
 ```
