@@ -71,7 +71,7 @@ class IyziLaravel
     {
         $paymentRequest = new CreatePaymentRequest();
         $paymentRequest->setLocale(Locale::TR);
-        $paymentRequest->setConversationId(Str::random(5) . time());
+        $paymentRequest->setConversationId($attributes['Payment_Id'] ?? Str::random(5) . time());
         $paymentRequest->setPrice($attributes['Price']);
         $paymentRequest->setPaidPrice($attributes['Price']);
         $paymentRequest->setCurrency(Currency::TL);
@@ -113,13 +113,13 @@ class IyziLaravel
 
         $paymentRequest->setShippingAddress($shipping);
 
-        $RodosGrup = new Address();
-        $RodosGrup->setContactName(config('iyzi-laravel.billingName'));
-        $RodosGrup->setCity(config('iyzi-laravel.billingCity'));
-        $RodosGrup->setCountry("Turkey");
-        $RodosGrup->setAddress(config('iyzi-laravel.billingAddress'));
+        $salesPerson = new Address();
+        $salesPerson->setContactName(config('iyzi-laravel.billingName'));
+        $salesPerson->setCity(config('iyzi-laravel.billingCity'));
+        $salesPerson->setCountry("Turkey");
+        $salesPerson->setAddress(config('iyzi-laravel.billingAddress'));
 
-        $paymentRequest->setBillingAddress($RodosGrup);
+        $paymentRequest->setBillingAddress($salesPerson);
 
         $items = array();
 
@@ -152,7 +152,7 @@ class IyziLaravel
     {
         $request = new CreatePaymentRequest();
         $request->setLocale(Locale::TR);
-        $request->setConversationId(Str::random(5) . time());
+        $request->setConversationId($attributes['Payment_Id'] ?? Str::random(5) . time());
         $request->setPrice($attributes['Price']);
         $request->setPaidPrice($attributes['Price']);
         $request->setCurrency(Currency::TL);
@@ -189,13 +189,13 @@ class IyziLaravel
 
         $request->setShippingAddress($shipping);
 
-        $RodosGrup = new Address();
-        $RodosGrup->setContactName(config('iyzi-laravel.billingName'));
-        $RodosGrup->setCity(config('iyzi-laravel.billingCity'));
-        $RodosGrup->setCountry("Turkey");
-        $RodosGrup->setAddress(config('iyzi-laravel.billingAddress'));
+        $salesPerson = new Address();
+        $salesPerson->setContactName(config('iyzi-laravel.billingName'));
+        $salesPerson->setCity(config('iyzi-laravel.billingCity'));
+        $salesPerson->setCountry("Turkey");
+        $salesPerson->setAddress(config('iyzi-laravel.billingAddress'));
 
-        $request->setBillingAddress($RodosGrup);
+        $request->setBillingAddress($salesPerson);
 
         $items = array();
 
@@ -227,7 +227,7 @@ class IyziLaravel
 
         $request = new CreateCardRequest();
         $request->setLocale(Locale::TR);
-        $request->setConversationId(Str::random(5) . time());
+        $request->setConversationId($attributes['Payment_Id'] ?? Str::random(5) . time());
         $request->setEmail($attributes['Email']);
         $request->setExternalId($attributes['ExternalId']);
 
@@ -253,7 +253,7 @@ class IyziLaravel
         if (!StorageCard::cardFind($attributes['CardNumber'])) {
             $query = new CreateCardRequest();
             $query->setLocale(Locale::TR);
-            $query->setConversationId(Str::random(5) . time());
+            $query->setConversationId($attributes['Payment_Id'] ?? Str::random(5) . time());
             $query->setCardUserKey($userKey ?? $attributes['UserKey']);
 
             $infoCard = new CardInformation();
@@ -296,7 +296,7 @@ class IyziLaravel
     {
         $info = new RetrieveCardListRequest();
         $info->setLocale(Locale::TR);
-        $info->setConversationId(Str::random(5) . time());
+        $info->setConversationId($attributes['Payment_Id'] ?? Str::random(5) . time());
         $info->setCardUserKey($UserKey);
 
         $list = CardList::retrieve($info, $this->options);
@@ -313,7 +313,7 @@ class IyziLaravel
     {
         $info = new DeleteCardRequest();
         $info->setLocale(Locale::TR);
-        $info->setConversationId(Str::random(5) . time());
+        $info->setConversationId($attributes['Payment_Id'] ?? Str::random(5) . time());
         $info->setCardToken($cardToken);
         $info->setCardUserKey($UserKey);
 
