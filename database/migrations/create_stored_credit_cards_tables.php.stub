@@ -12,7 +12,8 @@ return new class extends Migration{
     {
         Schema::create('stored_credit_cards', function (Blueprint $table) {
             $table->uuid('id');
-            $table->string('user_key');
+            $table->string('card_token', 199);
+            $table->string('user_key', 199);
             $table->string('card_bin_number', 199);
             $table->string('card_last_four_digits', 199);
             $table->string('card_alias', 199);

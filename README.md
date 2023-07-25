@@ -55,6 +55,7 @@ $start = $iyzi->startSinglePayment($data);
 $data = [
     'Email' => 'batuhan@rodosgrup.com',
     'ExternalId' => 'TR-231231111123',
+    'User_Id' => '673883839'
     'Alias' => 'Burası benim ilk kartım',
     'CardHolderName' => 'Batuhan Haymana',
     'CardNumber' => '4059030000000009',
@@ -106,6 +107,7 @@ $start = $iyzi->cardList($UserKey);
 //Parameters required to store the second card of the user
 $data = [
     'UserKey' => 'WIN9SoDhzmqMKAOQ174GoSW63Iw=',
+    'User_Id' => '673883839',
     'Alias' => 'Bu benim ikinci kartım',
     'CardHolderName' => 'Batuhan Haymana',
     'CardNumber' => '4987490000000002',
@@ -123,6 +125,7 @@ $start = $iyzi->storingSecondCard($data);
     - Delete Stored Card
     - Keep Second Card
 * Get paid with a storage card. ✓
+* Adding the stored cards to the database. ✓
 
 ## Contributing
 
