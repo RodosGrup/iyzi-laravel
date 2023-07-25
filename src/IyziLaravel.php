@@ -25,6 +25,7 @@ use Iyzipay\Model\Payment;
 use Iyzipay\Request\CreateCardRequest;
 use Iyzipay\Request\DeleteCardRequest;
 use Iyzipay\Request\RetrieveCardListRequest;
+use RodosGrup\IyziLaravel\Extra\StorageCard;
 
 class IyziLaravel
 {
@@ -214,6 +215,11 @@ class IyziLaravel
      */
     public function storageCard(array $attributes)
     {
+        $userKey = StorageCard::userFind($attributes['Email']);
+        if ($userKey) {
+            return $this->storingSecondCard($attributes, $attributes['Email'], $userKey);
+        }
+
         $request = new CreateCardRequest();
         $request->setLocale(Locale::TR);
         $request->setConversationId(Str::random(5) . time());
@@ -230,29 +236,51 @@ class IyziLaravel
         $request->setCard($infoCard);
 
         $keepCard = Card::create($request, $this->options);
+        $solution = json_decode(collect($keepCard)->toArray()["\x00Iyzipay\ApiResource\x00rawResult"]);
 
-        return json_decode(collect($keepCard)->toArray()["\x00Iyzipay\ApiResource\x00rawResult"]);
+        $this->modelStorageCard(collect($solution)->toArray(), $attributes['Email'], $attributes['User_Id']);
+
+        return $solution;
     }
 
-    public function storingSecondCard(array $attributes)
+    public function storingSecondCard(array $attributes, string $email = null, string $userKey = null)
     {
-        $query = new CreateCardRequest();
-        $query->setLocale(Locale::TR);
-        $query->setConversationId(Str::random(5) . time());
-        $query->setCardUserKey($attributes['UserKey']);
+        if (!StorageCard::cardFind($attributes['CardNumber'])) {
+            $query = new CreateCardRequest();
+            $query->setLocale(Locale::TR);
+            $query->setConversationId(Str::random(5) . time());
+            $query->setCardUserKey($userKey ?? $attributes['UserKey']);
 
-        $infoCard = new CardInformation();
-        $infoCard->setCardAlias($attributes['Alias']);
-        $infoCard->setCardHolderName($attributes['CardHolderName']);
-        $infoCard->setCardNumber($attributes['CardNumber']);
-        $infoCard->setExpireMonth($attributes['ExpireMonth']);
-        $infoCard->setExpireYear($attributes['ExpireYear']);
+            $infoCard = new CardInformation();
+            $infoCard->setCardAlias($attributes['Alias']);
+            $infoCard->setCardHolderName($attributes['CardHolderName']);
+            $infoCard->setCardNumber($attributes['CardNumber']);
+            $infoCard->setExpireMonth($attributes['ExpireMonth']);
+            $infoCard->setExpireYear($attributes['ExpireYear']);
 
-        $query->setCard($infoCard);
+            $query->setCard($infoCard);
 
-        $card = Card::create($query, $this->options);
+            $card = Card::create($query, $this->options);
 
-        return json_decode(collect($card)->toArray()["\x00Iyzipay\ApiResource\x00rawResult"]);
+            $solution = json_decode(collect($card)->toArray()["\x00Iyzipay\ApiResource\x00rawResult"]);
+
+            $this->modelStorageCard(collect($solution)->toArray(), $email, $attributes['User_Id']);
+
+            return $solution;
+        }
+
+        return ['status' => 'success', 'message' => 'Kart daha önceden kayıt altına alınmış'];
+    }
+
+    /**
+     * This field is the field where we transfer the results from the api to the database.
+     * array $attributes;
+     * string $email;
+     * string $user 
+     */
+    public function modelStorageCard(array $attributes = [], string $email, string $user)
+    {
+        StorageCard::addCreditCard(collect($attributes)->toArray(), $email, $user);
     }
 
     /**
@@ -285,6 +313,7 @@ class IyziLaravel
         $info->setCardUserKey($UserKey);
 
         $delete = Card::delete($info, $this->options);
+        $deleteModel = StorageCard::cardDelete($UserKey, $cardToken);
 
         return json_decode(collect($delete)->toArray()["\x00Iyzipay\ApiResource\x00rawResult"]);
     }

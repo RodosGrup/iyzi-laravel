@@ -1,12 +1,15 @@
-# iyzi-laravel
+# Improved iyzico payment service for Laravel 💳
 
 It is an iyzico payment service package developed for Laravel Library.
 
-## Installation
+## Installation 🚀
 
 
 ```bash
 composer require rodosgrup/iyzi-laravel
+```
+```bash
+php artisan vendor:publish
 ```
 
 ```env
@@ -18,8 +21,17 @@ BILLING_NAME="RODOS GRUP"
 BILLING_CITY="SAKARYA"
 BILLING_ADDRESS="Arabacıalanı mah. Mehmet Akif Ersoy Cad No 33 /J-K Serdivan /SAKARYA"
 ```
+## Working Status 🚀
+* Single Payment ✓
+* Card Transactions ✓
+    - Card Storage
+    - Query Stored Card
+    - Delete Stored Card
+    - Keep Second Card
+* Get paid with a storage card. ✓
+* Adding the stored cards to the database. ✓
 
-## Usage
+## Usage 💵 💴 💶 💷
 #### Application Launch
 ```php
 $iyzi = app()->iyzico;
@@ -55,12 +67,13 @@ $start = $iyzi->startSinglePayment($data);
 $data = [
     'Email' => 'batuhan@rodosgrup.com',
     'ExternalId' => 'TR-231231111123',
+    'User_Id' => '673883839'
     'Alias' => 'Burası benim ilk kartım',
     'CardHolderName' => 'Batuhan Haymana',
     'CardNumber' => '4059030000000009',
     'ExpireMonth' => '12',
     'ExpireYear' => '2030'
-]
+];
 
 $start = $iyzi->storageCard($data);
 ```
@@ -90,7 +103,7 @@ $start = $iyzi->paymentStorageCard($data);
 ```php
 //Parameters to Send to Delete Credit Card
 $UserKey = 'WIN9SoDhzmqMKAOQ174GoSW63Iw=';
-$cardToken = 'qLm9Ler4ThhY0hE8xRnhT67maX0='
+$cardToken = 'qLm9Ler4ThhY0hE8xRnhT67maX0=';
 
 $start = $iyzi->deleteCard($UserKey,$cardToken);
 ```
@@ -106,6 +119,7 @@ $start = $iyzi->cardList($UserKey);
 //Parameters required to store the second card of the user
 $data = [
     'UserKey' => 'WIN9SoDhzmqMKAOQ174GoSW63Iw=',
+    'User_Id' => '673883839',
     'Alias' => 'Bu benim ikinci kartım',
     'CardHolderName' => 'Batuhan Haymana',
     'CardNumber' => '4987490000000002',
@@ -115,14 +129,6 @@ $data = [
 
 $start = $iyzi->storingSecondCard($data);
 ```
-## Working Status
-* Single Payment ✓
-* Card Transactions ✓
-    - Card Storage
-    - Query Stored Card
-    - Delete Stored Card
-    - Keep Second Card
-* Get paid with a storage card. ✓
 
 ## Contributing
 
