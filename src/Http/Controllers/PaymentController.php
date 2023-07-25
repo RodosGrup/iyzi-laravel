@@ -25,7 +25,7 @@ class PaymentController extends Controller
 
         $threedsPayment = ThreedsPayment::create($pay, $options);
 
-        return redirect()->route('iyzico.laravel.gateway')
+        return redirect()->route(config('iyzi-laravel.returnUrl') ?? 'iyzico.laravel.gateway')
             ->with([
                 'content' => [
                     'payment' => $request->all(),
