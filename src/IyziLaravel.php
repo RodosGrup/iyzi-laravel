@@ -138,7 +138,7 @@ class IyziLaravel
 
         return redirect()->route('iyzico.laravel.gateway')
             ->with([
-                'content' => $createPay->getHtmlContent()
+                'content' => base64_decode(json_decode(collect($createPay)->toArray()["\x00Iyzipay\ApiResource\x00rawResult"])->threeDSHtmlContent)
             ]);
     }
 
