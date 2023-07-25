@@ -136,7 +136,8 @@ class IyziLaravel
 
         $createPay = ThreedsInitialize::create($paymentRequest, $this->options);
 
-        print_r($createPay);
+        return $createPay->getHtmlContent();
+        exit;
     }
 
     /**
