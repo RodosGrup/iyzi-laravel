@@ -4,6 +4,7 @@ namespace RodosGrup\IyziLaravel;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use RodosGrup\IyziLaravel\Contracts\IyzicoUser as IyzicoUserContract;
