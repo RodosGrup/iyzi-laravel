@@ -24,6 +24,10 @@ class IyziLaravelServiceProvider extends ServiceProvider
             __DIR__ . '/../src/Models/IyzicoUser.php' => base_path('app/Models/IyzicoUser.php'),
             __DIR__ . '/../src/Models/StoredCreditCard.php' => base_path('app/Models/StoredCreditCard.php')
         ]);
+
+        RedirectResponse::macro('payment', function ($payment) {
+            return $this->with('payment', $payment);
+        });
     }
 
     public function register()
