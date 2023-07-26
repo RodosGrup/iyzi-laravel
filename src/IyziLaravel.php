@@ -137,6 +137,21 @@ class IyziLaravel
         $createPay = ThreedsInitialize::create($paymentRequest, $this->options);
 
         if (collect($createPay)->toArray()["\x00Iyzipay\IyzipayResource\x00status"] === 'success') {
+
+            if ($attributes['storageCard'] ?? false) {
+                $this->storageCard([
+                    'Email' => $attributes['Email'],
+                    'Payment_Id' => $attributes['Payment_Id'] ?? Str::random(5) . time(),
+                    'ExternalId' => $attributes['ExternalId'] ?? Str::random(5) . time(),
+                    'User_Id' => $attributes['UserId'],
+                    'Alias' => $attributes['Name'] . ' kartı',
+                    'CardHolderName' => $attributes['CardHolderName'],
+                    'CardNumber' => $attributes['CardNumber'],
+                    'ExpireMonth' => $attributes['ExpireMonth'],
+                    'ExpireYear' => $attributes['ExpireYear']
+                ]);
+            }
+
             return redirect()->route('iyzico.laravel.gateway')
                 ->with([
                     'content' => $createPay->getHtmlContent()
