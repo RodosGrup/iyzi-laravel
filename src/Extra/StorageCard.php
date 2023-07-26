@@ -37,16 +37,18 @@ class StorageCard
         }
 
         if (!StoredCreditCard::whereCardBinNumber($attributes['binNumber'])->whereCardLastFourDigits($attributes['lastFourDigits'])->first()) {
-            StoredCreditCard::create([
-                'card_token' => $attributes['cardToken'],
-                'user_key' => $attributes['cardUserKey'],
-                'card_bin_number' => $attributes['binNumber'],
-                'card_last_four_digits' => $attributes['lastFourDigits'],
-                'card_alias' => $attributes['cardAlias'],
-                'card_association' => $attributes['cardAssociation'],
-                'card_bank_name' => $attributes['cardBankName'],
-                'card_type' => $attributes['cardType']
-            ]);
+            if (isset($attributes['cardAssociation']) && isset($attributes['cardBankName'])) {
+                StoredCreditCard::create([
+                    'card_token' => $attributes['cardToken'],
+                    'user_key' => $attributes['cardUserKey'],
+                    'card_bin_number' => $attributes['binNumber'],
+                    'card_last_four_digits' => $attributes['lastFourDigits'],
+                    'card_alias' => $attributes['cardAlias'],
+                    'card_association' => $attributes['cardAssociation'],
+                    'card_bank_name' => $attributes['cardBankName'],
+                    'card_type' => $attributes['cardType']
+                ]);
+            }
         }
     }
 
