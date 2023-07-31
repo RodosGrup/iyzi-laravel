@@ -190,7 +190,7 @@ class IyziLaravel
         $buyer->setEmail($attributes['Email']);
         $buyer->setIdentityNumber($attributes['IdentityNumber']);
         $buyer->setRegistrationAddress($attributes['Address']);
-        $buyer->setIp($_SERVER["REMOTE_ADDR"] ?? '127.0.0.1');
+        $buyer->setIp(isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : '127.0.0.1');
         $buyer->setCity($attributes['City']);
         $buyer->setCountry("Turkey");
 
