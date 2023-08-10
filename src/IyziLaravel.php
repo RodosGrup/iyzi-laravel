@@ -300,8 +300,9 @@ class IyziLaravel
      */
     public function modelStorageCard(array $attributes = [], string $email, string $user)
     {
-        dd($attributes);
-        StorageCard::addCreditCard(collect($attributes)->toArray(), $email, $user);
+        if ($attributes['status'] != 'failure') {
+            StorageCard::addCreditCard(collect($attributes)->toArray(), $email, $user);
+        }
     }
 
     /**
