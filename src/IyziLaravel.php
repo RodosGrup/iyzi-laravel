@@ -300,6 +300,7 @@ class IyziLaravel
      */
     public function modelStorageCard(array $attributes = [], string $email, string $user)
     {
+        dd($attributes);
         StorageCard::addCreditCard(collect($attributes)->toArray(), $email, $user);
     }
 
