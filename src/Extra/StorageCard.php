@@ -33,7 +33,7 @@ class StorageCard
                     'card_type' => $attributes['cardType']
                 ]);
 
-            return;
+            // return;
         }
 
         if (!StoredCreditCard::whereCardBinNumber($attributes['binNumber'])->whereCardLastFourDigits($attributes['lastFourDigits'])->first()) {
