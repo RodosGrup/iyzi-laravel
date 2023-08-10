@@ -237,7 +237,7 @@ class IyziLaravel
     {
         $userKey = StorageCard::userFind($attributes['Email']);
         if ($userKey) {
-            return $this->storingSecondCard($attributes, $attributes['Email'], $userKey);
+            $this->storingSecondCard($attributes, $attributes['Email'], $userKey);
         }
 
         $request = new CreateCardRequest();
@@ -260,7 +260,7 @@ class IyziLaravel
 
         $this->modelStorageCard(collect($solution)->toArray(), $attributes['Email'], $attributes['User_Id']);
 
-        return $solution;
+        // return $solution;
     }
 
     public function storingSecondCard(array $attributes, string $email = null, string $userKey = null)
@@ -286,7 +286,7 @@ class IyziLaravel
 
             $this->modelStorageCard(collect($solution)->toArray(), $email, $attributes['User_Id']);
 
-            return $solution;
+            // return $solution;
         }
 
         return ['status' => 'success', 'message' => 'Kart daha önceden kayıt altına alınmış'];
