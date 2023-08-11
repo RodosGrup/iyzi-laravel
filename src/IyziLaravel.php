@@ -22,7 +22,9 @@ use Iyzipay\Model\Card;
 use Iyzipay\Model\CardInformation;
 use Iyzipay\Model\CardList;
 use Iyzipay\Model\Payment;
+use Iyzipay\Model\Refund;
 use Iyzipay\Request\CreateCardRequest;
+use Iyzipay\Request\CreateRefundRequest;
 use Iyzipay\Request\DeleteCardRequest;
 use Iyzipay\Request\RetrieveCardListRequest;
 use RodosGrup\IyziLaravel\Extra\StorageCard;
@@ -338,5 +340,25 @@ class IyziLaravel
         $deleteModel = StorageCard::cardDelete($UserKey, $cardToken);
 
         return json_decode(collect($delete)->toArray()["\x00Iyzipay\ApiResource\x00rawResult"]);
+    }
+
+    /**
+     * Payment refund process
+     * string $transactionId
+     * string $price 
+     */
+    public function paymentRefund(string $transactionId, string $price)
+    {
+        $request =  new CreateRefundRequest();
+        $request->setLocale(Locale::TR);
+        $request->setConversationId(Str::random(5) . time());
+        $request->setPaymentTransactionId($transactionId);
+        $request->setPrice($price);
+        $request->setCurrency(Currency::TL);
+        $request->setIp(isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : '127.0.0.1');
+
+        $refund = Refund::create($request, $this->options);
+
+        return json_decode(collect($refund)->toArray()["\x00Iyzipay\ApiResource\x00rawResult"]);
     }
 }
