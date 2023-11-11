@@ -4,7 +4,14 @@ It is an iyzico payment service package developed for Laravel Library.
 
 ## Installation 🚀
 
-
+```JSON
+"repositories": [
+        {
+          "type": "vcs",
+          "url": "https://github.com/RodosGrup/iyzi-laravel.git"
+        }
+    ],
+```
 ```bash
 composer require rodosgrup/iyzi-laravel
 ```
